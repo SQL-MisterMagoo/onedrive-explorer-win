@@ -701,7 +701,7 @@ namespace NewApiBrowser
 
             while (IsMonitoring)
             {
-                Console.WriteLine("Checking...");
+                Console.WriteLine("Checking OneDrive...");
                 vdot.StartingToken = MonitorToken;
                 var changes = await Connection.ViewDeltaAsync(MonitorStartingFolder, vdot);
                 if (MonitorToken != changes.NextToken)
