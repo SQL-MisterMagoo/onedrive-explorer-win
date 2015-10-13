@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using OneDrive;
+using Newtonsoft.Json.Linq;
+using System.Text;
 
 namespace NewApiBrowser
 {
-    
+
     public partial class FormBrowser : Form
     {
         private ODConnection Connection { get; set; }
@@ -16,6 +18,9 @@ namespace NewApiBrowser
         private OneDriveTile _selectedTile;
 
         private FormAsyncJobViewer JobStatusForm { get; set; }
+        public bool IsMonitoring { get; private set; }
+        public string MonitorToken { get; private set; }
+        public ODItemReference MonitorStartingFolder { get; private set; }
 
         public FormBrowser()
         {
@@ -81,7 +86,7 @@ namespace NewApiBrowser
         private void LoadChildren(ODItemCollection items, bool clearExistingItems = true)
         {
             flowLayoutContents.SuspendLayout();
-            
+
             if (clearExistingItems)
                 flowLayoutContents.Controls.Clear();
 
@@ -151,7 +156,7 @@ namespace NewApiBrowser
             {
                 _selectedTile.Selected = false;
             }
-            
+
             var item = ((OneDriveTile)sender).SourceItem;
             LoadProperties(item);
             _selectedTile = (OneDriveTile)sender;
@@ -160,7 +165,7 @@ namespace NewApiBrowser
 
         private async void FormBrowser_Load(object sender, EventArgs e)
         {
-            await SignIn();   
+            await SignIn();
         }
 
         private async void NavigateToItemWithChildren(ODItem folder)
@@ -385,7 +390,7 @@ namespace NewApiBrowser
                 code = serverException.ServiceError.Code;
                 json = serverException.ServiceError.JsonString();
             }
-            
+
             MessageBox.Show(string.Format("OneDrive reported the following error:\r\ncode: {0}\r\nmessage: {1}\r\n{2}", code, message, json));
         }
 
@@ -415,7 +420,10 @@ namespace NewApiBrowser
         {
             try
             {
-                var result = await Connection.ViewChangesAsync(this.CurrentFolder.ItemReference(), ViewChangesOptions.Default);
+                ViewDeltaOptions vdo = ViewDeltaOptions.Default;
+                vdo.StartingToken = "latest";
+                var result = await Connection.ViewDeltaAsync(this.CurrentFolder.ItemReference(), vdo);
+                //var result = await Connection.ViewChangesAsync(this.CurrentFolder.ItemReference(), ViewChangesOptions.Default);
                 FormSyncResults results = new FormSyncResults(Connection, result);
                 results.Show();
             }
@@ -622,7 +630,7 @@ namespace NewApiBrowser
             try
             {
                 var newItemReference = ODConnection.ItemReferenceForDrivePath(path);
-                
+
                 FormUploadProgress uploadForm = new FormUploadProgress(filename);
                 var uploadOptions = ItemUploadOptions.Default;
                 uploadOptions.ProgressReporter = uploadForm.UpdateProgress;
@@ -671,6 +679,59 @@ namespace NewApiBrowser
             FormSyncResults display = new FormSyncResults(Connection, defaultDrive);
             display.Show();
 
+        }
+
+        private async void monitorChangesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ToggleMonitor();
+            if (!this.IsMonitoring) return;
+
+            ViewDeltaOptions vdo = ViewDeltaOptions.Default;
+            vdo.StartingToken = "latest";
+
+            var result = await Connection.ViewDeltaAsync(this.CurrentFolder.ItemReference(), vdo);
+            MonitorToken = result.NextToken;
+            MonitorStartingFolder = this.CurrentFolder.ItemReference();
+
+            statusLabel.Text = "Started Monitoring";
+
+            if (!IsMonitoring) return;
+
+            ViewDeltaOptions vdot = ViewDeltaOptions.Default;
+
+            while (IsMonitoring)
+            {
+                Console.WriteLine("Checking...");
+                vdot.StartingToken = MonitorToken;
+                var changes = await Connection.ViewDeltaAsync(MonitorStartingFolder, vdot);
+                if (MonitorToken != changes.NextToken)
+                {
+                    MonitorToken = changes.NextToken;
+
+                    StringBuilder sb = new StringBuilder("Files Updated.");
+
+                    foreach (var item in changes.Collection)
+                    {
+                        Console.WriteLine("Property: {0}, Value: {1}.", item.Name, item.Folder);
+                        if (item.File != null)
+                        {
+                            sb.AppendLine();
+                            sb.Append(item.Name);
+                        }
+                    }
+                    if (sb.ToString() != "Files Updated.")
+                        notifyIcon.ShowBalloonTip(5000, "OneDrive Update", sb.ToString(), ToolTipIcon.Info);
+
+                }
+
+                await Task.Run(() => { System.Threading.Thread.Sleep(30000); });
+            }
+        }
+
+        private void ToggleMonitor()
+        {
+            this.IsMonitoring = !this.IsMonitoring;
+            statusLabel.Text = "";
         }
     }
 

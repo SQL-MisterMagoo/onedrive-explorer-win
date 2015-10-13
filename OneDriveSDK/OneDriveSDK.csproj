@@ -41,6 +41,7 @@
     <Compile Include="CommandOptions\RetrievalOptions.cs" />
     <Compile Include="CommandOptions\StreamDownloadOptions.cs" />
     <Compile Include="CommandOptions\ThumbnailRetrievalOptions.cs" />
+    <Compile Include="CommandOptions\ViewDeltaOptions.cs" />
     <Compile Include="CommandOptions\ViewChangesOptions.cs" />
     <Compile Include="DataType\ODAsyncTaskStatus.cs" />
     <Compile Include="DataType\ODDataModel.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="DataType\ODUploadSession.cs" />
     <Compile Include="DataType\ODUploadSessionDescriptor.cs" />
     <Compile Include="DataType\ODUserProfile.cs" />
+    <Compile Include="DataType\ODViewDeltaResult.cs" />
     <Compile Include="Exceptions\ExceptionExtensions.cs" />
     <Compile Include="Exceptions\ODAuthenticationException.cs" />
     <Compile Include="Exceptions\ODSerializationException.cs" />

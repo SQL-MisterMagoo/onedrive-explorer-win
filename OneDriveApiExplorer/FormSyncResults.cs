@@ -50,5 +50,10 @@ namespace NewApiBrowser
                 labelRefreshing.Visible = false;
             }
         }
+
+        private void oneDriveObjectBrowser1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace OneDrive
         public const string CopyItemAction = "action.copy";
         public const string CreateLinkAction = "action.createLink";
         public const string UploadCreateSessionAction = "upload.createSession";
+        public const string ViewDeltaServiceAction = "view.delta";
 
         public const string PathComponentSeparator = "/";
 

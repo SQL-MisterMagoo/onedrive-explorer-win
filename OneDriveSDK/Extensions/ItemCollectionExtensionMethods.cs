@@ -68,5 +68,24 @@ namespace OneDrive
                 return null;
             }
         }
+
+        public async static Task<ODViewDeltaResult> GetNextResponseCollection(ODViewDeltaResult previousCollection, ODConnection connection)
+        {
+            if (null == connection)
+                throw new ArgumentNullException("connection");
+            if (null == previousCollection)
+                throw new ArgumentNullException("previousCollection");
+
+            if (previousCollection.MoreItemsAvailable())
+            {
+                return await connection.DataModelForRequest<ODViewDeltaResult>(new Uri(previousCollection.NextLink), ApiConstants.HttpGet);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
     }
 }

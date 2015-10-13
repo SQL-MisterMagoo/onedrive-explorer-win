@@ -427,5 +427,27 @@ namespace OneDrive
             var serviceUri = UriForItemReference(driveReference);
             return await DataModelForRequest<ODDrive>(serviceUri, ApiConstants.HttpGet);
         }
+
+        /// <summary>
+        /// Returns delta information for items at and below the specified item-id.
+        /// </summary>
+        /// <param name="rootItemReference"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public async Task<ODViewDeltaResult> ViewDeltaAsync(ODItemReference rootItemReference, ViewDeltaOptions options)
+        {
+            if (!rootItemReference.IsValid())
+                throw new ArgumentException("rootItemReference was invalid. Requires either an ID or Path");
+            if (null == options)
+                throw new ArgumentNullException("options");
+
+            var queryParams = new QueryStringBuilder();
+            options.ModifyQueryString(queryParams);
+
+            Uri serviceUri = UriForItemReference(rootItemReference, ApiConstants.ViewDeltaServiceAction, queryParams);
+            var request = await CreateHttpRequestAsync(serviceUri, ApiConstants.HttpGet);
+
+            return await DataModelForRequest<ODViewDeltaResult>(request);
+        }
     }
 }

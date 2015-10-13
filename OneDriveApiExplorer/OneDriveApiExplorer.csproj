@@ -208,6 +208,7 @@
     <ProjectReference Include="..\OneDriveSDK\OneDriveSDK.csproj">
       <Project>{7CFA73EF-485B-44C1-BE7E-18391750C725}</Project>
       <Name>OneDriveSDK</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

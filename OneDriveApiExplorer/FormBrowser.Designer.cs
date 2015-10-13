@@ -28,11 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormBrowser));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutContents = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanelBreadcrumb = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLabelOneDriveRoot = new System.Windows.Forms.LinkLabel();
-            this.oneDriveObjectBrowser1 = new NewApiBrowser.OneDriveObjectBrowser();
             this.panel1 = new System.Windows.Forms.Panel();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -61,12 +62,18 @@
             this.getChangesHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.getDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusMain = new System.Windows.Forms.StatusStrip();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.monitorChangesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.oneDriveObjectBrowser1 = new NewApiBrowser.OneDriveObjectBrowser();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.flowLayoutPanelBreadcrumb.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.statusMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -125,17 +132,6 @@
             this.linkLabelOneDriveRoot.TabStop = true;
             this.linkLabelOneDriveRoot.Text = "OneDrive";
             this.linkLabelOneDriveRoot.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelBreadcrumb_LinkClicked);
-            // 
-            // oneDriveObjectBrowser1
-            // 
-            this.oneDriveObjectBrowser1.DisplayFormat = NewApiBrowser.PropertyDisplayFormat.RawJson;
-            this.oneDriveObjectBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.oneDriveObjectBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.oneDriveObjectBrowser1.Margin = new System.Windows.Forms.Padding(2);
-            this.oneDriveObjectBrowser1.Name = "oneDriveObjectBrowser1";
-            this.oneDriveObjectBrowser1.SelectedItem = null;
-            this.oneDriveObjectBrowser1.Size = new System.Drawing.Size(257, 464);
-            this.oneDriveObjectBrowser1.TabIndex = 0;
             // 
             // panel1
             // 
@@ -334,7 +330,8 @@
             this.advancedScenariosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.getChangesHereToolStripMenuItem,
             this.searchToolStripMenuItem,
-            this.getDriveToolStripMenuItem});
+            this.getDriveToolStripMenuItem,
+            this.monitorChangesToolStripMenuItem});
             this.advancedScenariosToolStripMenuItem.Name = "advancedScenariosToolStripMenuItem";
             this.advancedScenariosToolStripMenuItem.Size = new System.Drawing.Size(125, 19);
             this.advancedScenariosToolStripMenuItem.Text = "Advanced Scenarios";
@@ -342,29 +339,74 @@
             // getChangesHereToolStripMenuItem
             // 
             this.getChangesHereToolStripMenuItem.Name = "getChangesHereToolStripMenuItem";
-            this.getChangesHereToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.getChangesHereToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.getChangesHereToolStripMenuItem.Text = "Get Changes...";
             this.getChangesHereToolStripMenuItem.Click += new System.EventHandler(this.getChangesHereToolStripMenuItem_Click);
             // 
             // searchToolStripMenuItem
             // 
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.searchToolStripMenuItem.Text = "Search...";
             this.searchToolStripMenuItem.Click += new System.EventHandler(this.searchToolStripMenuItem_Click);
             // 
             // getDriveToolStripMenuItem
             // 
             this.getDriveToolStripMenuItem.Name = "getDriveToolStripMenuItem";
-            this.getDriveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.getDriveToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.getDriveToolStripMenuItem.Text = "Get Drive...";
             this.getDriveToolStripMenuItem.Click += new System.EventHandler(this.getDriveToolStripMenuItem_Click);
+            // 
+            // statusMain
+            // 
+            this.statusMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel});
+            this.statusMain.Location = new System.Drawing.Point(0, 547);
+            this.statusMain.Name = "statusMain";
+            this.statusMain.Size = new System.Drawing.Size(800, 22);
+            this.statusMain.TabIndex = 7;
+            this.statusMain.Text = "statusStrip1";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoToolTip = true;
+            this.statusLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(785, 17);
+            this.statusLabel.Spring = true;
+            this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // monitorChangesToolStripMenuItem
+            // 
+            this.monitorChangesToolStripMenuItem.Name = "monitorChangesToolStripMenuItem";
+            this.monitorChangesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.monitorChangesToolStripMenuItem.Text = "Monitor Changes";
+            this.monitorChangesToolStripMenuItem.Click += new System.EventHandler(this.monitorChangesToolStripMenuItem_Click);
+            // 
+            // notifyIcon
+            // 
+            this.notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon.BalloonTipTitle = "OneDrive Update";
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Visible = true;
+            // 
+            // oneDriveObjectBrowser1
+            // 
+            this.oneDriveObjectBrowser1.DisplayFormat = NewApiBrowser.PropertyDisplayFormat.RawJson;
+            this.oneDriveObjectBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.oneDriveObjectBrowser1.Location = new System.Drawing.Point(0, 0);
+            this.oneDriveObjectBrowser1.Margin = new System.Windows.Forms.Padding(2);
+            this.oneDriveObjectBrowser1.Name = "oneDriveObjectBrowser1";
+            this.oneDriveObjectBrowser1.SelectedItem = null;
+            this.oneDriveObjectBrowser1.Size = new System.Drawing.Size(257, 464);
+            this.oneDriveObjectBrowser1.TabIndex = 0;
             // 
             // FormBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 569);
+            this.Controls.Add(this.statusMain);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
@@ -380,6 +422,8 @@
             this.flowLayoutPanelBreadcrumb.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusMain.ResumeLayout(false);
+            this.statusMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -420,6 +464,10 @@
         private System.Windows.Forms.ToolStripMenuItem largeFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem renameSelectedItemToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem getDriveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem monitorChangesToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusMain;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }
 

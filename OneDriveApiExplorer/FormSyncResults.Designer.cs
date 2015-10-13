@@ -45,6 +45,7 @@
             this.oneDriveObjectBrowser1.SelectedItem = null;
             this.oneDriveObjectBrowser1.Size = new System.Drawing.Size(760, 475);
             this.oneDriveObjectBrowser1.TabIndex = 0;
+            this.oneDriveObjectBrowser1.Load += new System.EventHandler(this.oneDriveObjectBrowser1_Load);
             // 
             // buttonGetNext
             // 
